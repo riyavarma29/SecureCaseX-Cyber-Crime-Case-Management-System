@@ -1,0 +1,40 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<div class="admin-container">
+
+  <!-- HEADER -->
+  <div class="admin-header">
+    <div>
+      <h1>Analyst Dashboard</h1>
+      <p class="welcome-text">Welcome, <strong>{{ user.username }}</strong></p>
+    </div>
+
+    <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="logout-btn">Logout</button>
+    </form>
+  </div>
+
+  <!-- INFO BOX -->
+  <div class="admin-info">
+    view assigned users, analyze the reports, and study the cases
+  </div>
+
+  <!-- DASHBOARD CARDS -->
+   <div class="dashboard-grid">
+
+  <a href="{% url 'assigned_cases' %}" class="dash-card users-card">
+    <h3>Assigned Cases</h3>
+    <p>View cases assigned to you</p>
+  </a>
+  <a href="{% url 'analyst_reports' %}" class="dash-card cases-card">
+    <h3>Reports</h3>
+    <p>Your case summaries</p>
+</a>
+  <a href="{% url 'case_stats' %}" class="dash-card reports-card">
+  <h3>Case Statistics</h3>
+  <p>Your analysis progress</p>
+</a>
+</div>
+
+</div>

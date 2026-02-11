@@ -1,0 +1,40 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<div class="container">
+  <h2 class="page-title">System Reports</h2>
+
+  <div class="info-box">
+    These reports provide a high-level overview of system activity and workload.
+  </div>
+  <div class="dashboard-grid">
+
+  <div class="report-card bg-primary-card">
+    <h6>Total Users</h6>
+    <h2>{{ total_users }}</h2>
+  </div>
+
+  <div class="report-card bg-success-card">
+    <h6>Total Cases</h6>
+    <h2>{{ total_cases }}</h2>
+  </div>
+
+  <div class="report-card bg-warning-card">
+    <h6>Open Cases</h6>
+    <h2>{{ open_cases }}</h2>
+  </div>
+
+  <div class="report-card bg-danger-card">
+    <h6>Closed Cases</h6>
+    <h2>{{ closed_cases }}</h2>
+  </div>
+
+  <div class="report-card bg-info-card">
+    <h6>Investigating Cases</h6>
+    <h2>{{ investigating_cases }}</h2>
+  </div>
+</div>
+
+  <br>
+  <a href="{% url 'dashboard' %}" class="btn-secondary">⬅ Back to Dashboard</a>
+</div>

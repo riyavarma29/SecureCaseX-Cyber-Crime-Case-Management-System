@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Case Report - {{ case.title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            line-height: 1.4;
+            margin: 20px;
+        }
+
+        h1, h2, h3 {
+            color: #003366;
+        }
+
+        h1 { font-size: 20px; text-align: center; margin-bottom: 10px; }
+        h2 { font-size: 16px; margin-top: 20px; }
+        h3 { font-size: 14px; margin-top: 10px; }
+
+        .metadata {
+            font-size: 11px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #999;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .evidence-img {
+            max-width: 300px;
+            max-height: 200px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+        }
+
+        .section {
+            margin-top: 20px;
+        }
+        .badge {
+            background-color: #007bff;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Case Report</h1>
+<h2>{{ case.title }}</h2>
+
+<div class="metadata">
+    <strong>Generated on:</strong> {{ generated_time|date:"M d, Y, h:i A" }}<br>
+    <strong>Status:</strong> <span class="badge">{{ case.status|capfirst }}</span>
+</div>
+
+{% for analysis in analyses %}
+<div class="section">
+    <h3>Analyst: {{ analysis.analyst.username }}</h3>
+
+    <strong>Evidence Summary:</strong>
+    <p>{{ analysis.evidence_summary }}</p>
+
+    <strong>Insights:</strong>
+    <p>{{ analysis.insights }}</p>
+
+    <strong>Patterns Identified:</strong>
+    <p>{{ analysis.patterns_identified|default:"N/A" }}</p>
+
+    <strong>Recommended Status:</strong>
+    <p>{{ analysis.recommended_status|capfirst }}</p>
+
+    {% if analysis.case.evidences.exists %}
+    <strong>Attached Evidence:</strong>
+    <ul>
+        {% for ev in analysis.case.evidences.all %}
+        <li>
+            <p><strong>{{ ev.description|default:"No description" }}</strong></p>
+           {% if ev.is_image %}
+                <img src="data:{{ ev.mime_type }};base64,{{ ev.base64_data }}" class="evidence-img">
+            {% else %}
+                <p>File: {{ ev.file.name }}</p>
+            {% endif %}
+            <p>SHA-256: {{ ev.hash_code }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+</div>
+<hr>
+{% endfor %}
+</body>
+</html>

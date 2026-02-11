@@ -1,0 +1,35 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<div class="container form-card">
+  <h2>Upload Evidence</h2>
+
+  <div class="info-box">
+    <strong>Case:</strong> {{ case.title }} <br>
+    Evidence hash will be generated automatically to ensure integrity.
+  </div>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label>Evidence File</label>
+    <input type="file" name="file" required>
+
+    <label>Description</label>
+    <textarea name="description" placeholder="Describe the evidence..."></textarea>
+    
+    <button type="submit" class="btn-primary">
+      Upload & Generate Hash
+    </button>
+  </form>
+  {% if hash_code %}
+  <div class="hash-box">
+    <strong>File Integrity Hash (SHA-256):</strong><br>
+    <code>{{ hash_code }}</code>
+  </div>
+{% endif %}
+
+  <a href="{% url 'investigator_dashboard' %}" class="btn-secondary">
+    ⬅ Back
+  </a>
+
+</div>

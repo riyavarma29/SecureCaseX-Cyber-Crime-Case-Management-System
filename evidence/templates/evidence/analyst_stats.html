@@ -1,0 +1,77 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<div class="dashboard-container">
+
+  <!-- HEADER -->
+  <div class="dashboard-header">
+    <div>
+      <h2 class="dashboard-title">Case Statistics</h2>
+      <p class="dashboard-subtitle">
+        High-level overview of case status and activity
+      </p>
+    </div>
+
+    <a href="{% url 'analyst_dashboard' %}" class="btn-secondary">
+      ⬅ Back to Dashboard
+    </a>
+  </div>
+
+  <!-- STATS GRID -->
+  <div class="dashboard-grid">
+
+    <!-- TOTAL CASES -->
+    <div class="report-card bg-info-card">
+      <h6>Total Cases</h6>
+      <h2>{{ total_cases }}</h2>
+      <p>All cases in the system</p>
+    </div>
+
+    <!-- OPEN CASES -->
+    <div class="report-card bg-warning-card">
+      <h6>Open Cases</h6>
+      <h2>{{ open_cases }}</h2>
+      <p>Currently under review</p>
+    </div>
+
+    <!-- INVESTIGATING -->
+    <div class="report-card bg-primary-card">
+      <h6>Investigating</h6>
+      <h2>{{ investigating_cases }}</h2>
+      <p>Cases actively investigated</p>
+    </div>
+
+    <!-- CLOSED -->
+    <div class="report-card bg-success-card">
+      <h6>Closed Cases</h6>
+      <h2>{{ closed_cases }}</h2>
+      <p>Resolved & archived</p>
+    </div>
+
+  </div>
+
+  <!-- OPTIONAL INSIGHT SECTION -->
+  <div class="admin-section">
+    <div class="user-table-card">
+      <h3>Analyst Insights</h3>
+      <p class="dashboard-subtitle">
+        System-generated observations based on current data
+      </p>
+
+      <ul style="margin-top:15px; line-height:1.8;">
+        {% if open_cases > closed_cases %}
+          <li>⚠️ More cases are open than closed. Review workload distribution.</li>
+        {% endif %}
+
+        {% if investigating_cases > 0 %}
+          <li>🔍 {{ investigating_cases }} cases are actively under investigation.</li>
+        {% endif %}
+
+        {% if total_cases == 0 %}
+          <li>ℹ️ No cases have been created yet.</li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+
+</div>

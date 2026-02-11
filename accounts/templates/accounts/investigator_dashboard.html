@@ -1,0 +1,72 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<div class="dashboard-container">
+
+  <!-- HEADER -->
+  <div class="dashboard-header">
+    <div class="header-left">
+      <h2 class="dashboard-title">Investigator Dashboard</h2>
+    </div>
+
+    <div class="header-right">
+      <span class="welcome-text">
+        Welcome, <strong>{{ user.username }}</strong>
+      </span>
+
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="logout-btn">Logout</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ASSIGNED CASES -->
+  <h3 class="dashboard-subtitle">Assigned Cases</h3>
+
+  {% if cases %}
+  <table class="case-table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Status</th>
+         <th>Evidence</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for case in cases %}
+      <tr>
+        <td>{{ case.title }}</td>
+        <td>
+          <span class="case-status 
+            {% if case.status == 'Open' %}status-open
+            {% elif case.status == 'Investigating' %}status-investigating
+            {% elif case.status == 'Closed' %}status-closed
+            {% endif %}">
+            {{ case.status }}
+          </span>
+        </td>
+         <td>
+          <span class="evidence-badge">
+            {{ case.evidence_count }} Files
+          </span>
+        </td>
+        <td class="action-links">
+          <a href="{% url 'update_case_status' case.id %}" class="action-update">Update Status</a>
+          <a href="{% url 'upload_evidence' case.id %}" class="action-upload">Upload Evidence</a>
+          <a href="{% url 'view_case_evidence' case.id %}" class="action-view">View Evidence</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% else %}
+    <div class="empty-state">
+      <p>No cases assigned to you.</p>
+    </div>
+  {% endif %}
+
+</div>

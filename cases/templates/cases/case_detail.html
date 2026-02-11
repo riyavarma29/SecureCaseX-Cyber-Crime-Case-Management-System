@@ -1,0 +1,51 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<div class="container">
+
+  <h2 class="page-title">Case Details</h2>
+
+  <div class="info-box">
+    This section shows complete case information including current status
+    and assigned investigator.
+  </div>
+
+  <div class="case-card">
+
+    <div class="case-row">
+      <span class="label">Title</span>
+      <span class="value">{{ case.title }}</span>
+    </div>
+
+    <div class="case-row">
+      <span class="label">Description</span>
+      <span class="value">{{ case.description }}</span>
+    </div>
+
+    <div class="case-row">
+      <span class="label">Status</span>
+      <span class="badge status-{{ case.status }}">
+        {{ case.status|title }}
+      </span>
+    </div>
+
+    <div class="case-row">
+      <span class="label">Assigned Investigator</span>
+      <span class="value">
+        {{ case.assigned_investigator.username|default:"Not Assigned" }}
+      </span>
+    </div>
+
+  </div>
+
+  {% if user.role == 'admin' or user.role == 'investigator' %}
+    <a href="{% url 'update_case_status' case.id %}" class="btn-primary">
+      Update Status
+    </a>
+  {% endif %}
+
+  <a href="{% url 'case_list' %}" class="btn-secondary">
+    ⬅ Back to Cases
+  </a>
+
+</div>

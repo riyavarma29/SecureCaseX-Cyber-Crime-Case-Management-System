@@ -1,0 +1,85 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<h2 class="page-title text-center">Case List</h2>
+<div class="container-lg mt-5">
+  <div class="case-card mx-auto">
+
+    <div class="alert alert-info small text-center mb-4">
+      View case details, assign investigators, or update case status.
+    </div>
+
+    {% if user.role == 'admin' %}
+    <div class="d-flex justify-content-end mb-3">
+      <a href="{% url 'create_case' %}" class="btn btn-success btn-sm">
+        + Add New Case
+      </a>
+    </div>
+    {% endif %}
+
+    <div class="table-responsive">
+      <table class="table table-borderless table-hover align-middle case-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Investigator</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        {% for case in cases %}
+        <tr>
+          <td>{{ case.title }}</td>
+
+          <td>
+            <span class="status-badge {{ case.status|lower }}">
+              {{ case.status }}
+            </span>
+          </td>
+
+          <td>
+            {{ case.assigned_investigator|default:"Unassigned" }}
+          </td>
+          <td class="text-end">
+          <div class="d-flex flex-wrap justify-content-end gap-2">
+            <a href="{% url 'case_detail' case.id %}" class="btn btn-sm btn-outline-info">
+              View
+            </a>
+
+            {% if user.role == 'admin' %}
+              <a href="{% url 'assign_investigator' case.id %}"
+                 class="btn btn-sm btn-outline-warning">
+                Assign Investigator
+              </a>
+
+              <a href="{% url 'assign_analyst' case.id %}"
+                 class="btn btn-sm btn-outline-success">
+                Assign Analyst
+              </a>
+            {% endif %}
+
+            {% if user.role == 'admin' or user.role == 'investigator' %}
+              <a href="{% url 'update_case_status' case.id %}"
+                 class="btn btn-sm btn-outline-primary">
+                Update
+              </a>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-sm">
+        ← Back to Dashboard
+      </a>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,90 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% load tz %}
+<div class="admin-container">
+
+  <!-- HEADER -->
+  <div class="admin-header">
+    <div>
+      <h1>Admin Dashboard</h1>
+      <p class="welcome-text">Welcome, <strong>{{ user.username }}</strong></p>
+    </div>
+
+    <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="logout-btn">Logout</button>
+    </form>
+  </div>
+
+  <!-- INFO BOX -->
+  <div class="admin-info">
+    Manage users, monitor cases, and view system-wide reports from one place.
+  </div>
+
+  <!-- DASHBOARD CARDS -->
+  <div class="dashboard-grid">
+
+    <a href="{% url 'manage_users' %}" class="dash-card users-card">
+      <h3>Manage Users</h3>
+      <p>Add, edit, or assign roles to users</p>
+    </a>
+
+    <a href="{% url 'case_list' %}" class="dash-card cases-card">
+      <h3>All Cases</h3>
+      <p>View and manage all registered cases</p>
+    </a>
+
+    <a href="{% url 'system_reports' %}" class="dash-card reports-card">
+      <h3>System Reports</h3>
+      <p>Track performance and statistics</p>
+    </a>
+
+  </div>
+  <div class="admin-section mt-5">
+
+  <div class="section-header">
+    <h3>User Activity</h3>
+    <p>System users & login status</p>
+  </div>
+
+  <div class="user-table-card">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Last Login</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in users %}
+        <tr>
+          <td class="username">{{ u.username }}</td>
+          <td>
+            <span class="role-badge {{ u.role }}">
+              {{ u.role|title }}
+            </span>
+          </td>
+          <td>
+            {% if u.is_active %}
+              <span class="status-badge active">Active</span>
+            {% else %}
+              <span class="status-badge inactive">Inactive</span>
+            {% endif %}
+          </td>
+          <td class="last-login">
+            {% if u.last_login %}
+                {{ u.last_login|localtime|date:"d M Y, H:i:s" }}
+            {% else %}
+                Never logged in
+            {% endif %}
+        </td>
+
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>

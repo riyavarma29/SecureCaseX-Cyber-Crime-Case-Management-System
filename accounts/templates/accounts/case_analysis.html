@@ -1,0 +1,54 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+{% block content %}
+<div class="container">
+
+    <h2 class="page-title"> Case Analysis</h2>
+
+    <div class="info-box">
+        <strong>Case:</strong> {{ case.title }} <br>
+        <strong>Status:</strong>
+        <span class="badge status-{{ case.status }}">{{ case.status|title }}</span>
+    </div>
+
+    <div>
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="evidence">Evidence Summary</label>
+                <textarea id="evidence" name="evidence" placeholder="Summarize the digital evidence..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="insights">Insights</label>
+                <textarea id="insights" name="insights" placeholder="Your analytical insights..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="patterns">Patterns / Links Identified</label>
+                <textarea id="patterns" name="patterns" placeholder="Connections with other cases, trends, patterns..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="recommended_status">Recommended Status</label>
+                <select id="recommended_status" name="recommended_status" required>
+                    <option value="open">Keep Open</option>
+                    <option value="in_review">Move to Review</option>
+                    <option value="closed">Recommend Closure</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-primary">
+                Submit Analysis
+            </button>
+        </form>
+
+        <a href="{% url 'assigned_cases' %}" class="btn-secondary">
+            ← Back to Assigned Cases
+        </a>
+    </div>
+
+</div>
+{% endblock %}

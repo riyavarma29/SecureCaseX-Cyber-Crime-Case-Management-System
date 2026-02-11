@@ -1,0 +1,58 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<div class="dashboard-container">
+
+  <h2 class="dashboard-title">
+    Evidence for <span style="color:#2563eb;">{{ case.title }}</span>
+  </h2>
+
+  {% if evidences %}
+  <table class="case-table">
+    <thead>
+      <tr>
+        <th>File</th>
+        <th>Description</th>
+        <th>Hash (SHA-256)</th>
+        <th>Uploaded At</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for ev in evidences %}
+      <tr>
+        <td>
+          <a href="{{ ev.file.url }}" target="_blank" class="action-view">
+            View File
+          </a>
+        </td>
+
+        <td>
+          {{ ev.description|default:"—" }}
+        </td>
+         <td>
+        <code class="hash-text">
+          {{ ev.hash_code|slice:":16" }}…
+        </code>
+        <br>
+        <small class="hash-full">{{ ev.hash_code }}</small>
+      </td>
+        <td>
+          {{ ev.uploaded_at|date:"d M Y, h:i A" }}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% else %}
+  <div class="empty-state">
+    <p>No evidence uploaded yet.</p>
+  </div>
+  {% endif %}
+
+  <a href="{% url 'investigator_dashboard' %}" class="btn-secondary">
+    ⬅ Back to Dashboard
+  </a>
+
+</div>

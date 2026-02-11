@@ -1,0 +1,58 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<div class="dashboard-container">
+
+    <!-- Header -->
+    <div class="dashboard-header">
+        <h2 class="dashboard-title">My Assigned Cases</h2>
+        <span class="welcome-text">Analyst Panel</span>
+    </div>
+
+    <p class="dashboard-subtitle">
+        Review and analyze the cases assigned to you.
+    </p>
+
+    {% if cases %}
+    <table class="case-table">
+    <thead>
+        <tr>
+            <th>Case Title</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {% for case in cases %}
+        <tr>
+            <td>{{ case.title }}</td>
+            <td>{{ case.status|capfirst }}</td>
+            <td>
+                {% if user.role == 'analyst' and case.assigned_analyst == user %}
+                    <a href="{% url 'analyze_case' case.id %}" class="btn btn-sm btn-success">
+                        Analyze
+                    </a>
+                {% endif %}
+                <a href="{% url 'view_case_info' case.id %}" class="btn btn-sm btn-outline-info">View Info</a>
+
+                <a href="{% url 'generate_case_report' case.id %}" class="btn btn-sm btn-outline-primary">
+                    Generate Report PDF
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+    {% else %}
+        <div class="empty-state">
+            No cases have been assigned to you yet.
+        </div>
+    {% endif %}
+
+    <a href="{% url 'dashboard' %}" class="btn-secondary">
+        ⬅ Back to Dashboard
+    </a>
+
+</div>

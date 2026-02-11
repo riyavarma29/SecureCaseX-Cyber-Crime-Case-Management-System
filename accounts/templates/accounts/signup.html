@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="auth-body">
+
+  <div class="auth-wrapper">
+    <div class="auth-card">
+
+      <h2 class="auth-title">Create Account</h2>
+      <p class="auth-subtitle">
+        Register to access the Cyber Case Management System
+      </p>
+
+      {% if messages %}
+        {% for message in messages %}
+          <p class="error-text">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+
+      <form method="post">
+        {% csrf_token %}
+
+        <label>Username</label>
+        <input type="text" name="username" required>
+
+        <label>Email</label>
+        <input type="email" name="email" required>
+
+        <label>Password</label>
+        <input type="password" name="password1" required>
+
+        <label>Confirm Password</label>
+        <input type="password" name="password2" required>
+
+        <label>Role</label>
+        <select name="role" required>
+          <option value="">Select Role</option>
+
+          <option value="investigator">Investigator</option>
+          <option value="analyst">Analyst</option>
+        </select>
+
+        <button type="submit" class="auth-btn">Sign Up</button>
+      </form>
+
+      <p class="auth-footer">
+        Already have an account?
+        <a href="{% url 'login' %}">Login</a>
+      </p>
+
+    </div>
+  </div>
+
+</body>
+</html>

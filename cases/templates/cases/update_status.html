@@ -1,0 +1,32 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<div class="container">
+
+  <h2 class="page-title">Update Case Status</h2>
+
+  <div class="form-card">
+
+    <form method="post">
+      {% csrf_token %}
+
+      <label>Case Status</label>
+      <select name="status" required>
+        <option value="">-- Choose The Status --</option>
+        <option value="open">Open</option>
+        <option value="investigating">Investigating</option>
+        <option value="closed">Closed</option>
+      </select>
+
+      <button type="submit" class="btn-primary" style="margin-top: 1rem;">
+        Update Status
+      </button>
+    </form>
+
+  </div>
+
+  <a href="{% url 'case_list' %}" class="btn-secondary">
+    ⬅ Back to Cases
+  </a>
+
+</div>

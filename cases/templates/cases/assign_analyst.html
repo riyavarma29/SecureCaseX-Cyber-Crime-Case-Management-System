@@ -1,0 +1,32 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<div class="container">
+
+  <h2 class="page-title">Assign Analyst</h2>
+
+  <div class="form-card">
+
+    <form method="post">
+      {% csrf_token %}
+
+      <label>Select Analyst</label>
+      <select name="analyst" class="form-select mb-3" required>
+        <option value="">-- Choose Analyst --</option>
+        {% for analyst in analysts %}
+          <option value="{{ analyst.id }}">{{ analyst.username }}</option>
+        {% endfor %}
+      </select>
+
+      <button type="submit" class="btn-primary" style="margin-top: 2rem;">
+         Assign Analyst
+      </button>
+    </form>
+
+  </div>
+
+  <a href="{% url 'case_list' %}" class="btn-secondary">
+    ⬅ Back to Case List
+  </a>
+
+</div>

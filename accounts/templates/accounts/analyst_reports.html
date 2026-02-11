@@ -1,0 +1,69 @@
+{% load static %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<div class="container-fluid my-5 px-5">
+
+    <h2 class="mb-4 text-center">My Case Analyses</h2>
+
+    {% if analyses %}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Case Title</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Evidence Summary</th>
+                    <th scope="col">Insights</th>
+                    <th scope="col">Patterns / Links</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for analysis in analyses %}
+                <tr>
+                    <td class="fw-bold">{{ analysis.case.title }}</td>
+                    <td>
+                        <span class="badge 
+                            {% if analysis.case.status == 'open' %}bg-primary
+                            {% elif analysis.case.status == 'in_review' %}bg-warning text-dark
+                            {% elif analysis.case.status == 'closed' %}bg-success
+                            {% else %}bg-secondary{% endif %}">
+                            {{ analysis.case.status|capfirst }}
+                        </span>
+                    </td>
+                    <td>{{ analysis.evidence_summary|truncatewords:25 }}</td>
+                    <td>{{ analysis.insights|truncatewords:25 }}</td>
+                    <td>{{ analysis.patterns_identified|truncatewords:25 }}</td>
+                    <td class="text-nowrap">
+                        {% if analysis %}
+                        <a href="{% url 'generate_case_report' analysis.case.id %}" 
+                           class="btn btn-success btn-sm mb-1">
+                            📄 Download PDF
+                        </a>
+                        <a href="{% url 'view_case_info' analysis.case.id %}" 
+                           class="btn btn-info btn-sm mb-1 ms-1">
+                            👁 View Info
+                        </a>
+                        {% else %}
+                        <span class="text-muted">Not available yet</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-secondary text-center">
+        You have not submitted any analyses yet.
+    </div>
+    {% endif %}
+
+    <div class="mt-4 text-center">
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">
+            ⬅ Back to Dashboard
+        </a>
+    </div>
+
+</div>
